@@ -19,101 +19,128 @@ class User:
 
 @bot.message_handler(commands=['help','start'])
 def send_welcome(message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-    itembtn1 = types.KeyboardButton('/reg')
-    itembtn2 = types.KeyboardButton('/about')
-    markup.add(itembtn1,itembtn2)
-
-    bot.send_message(message.chat.id, "Здравствуйте " + message.from_user.first_name +
-    ". \nВы откликнулись на наше предложение о работе)\nДавайте пройдём небольшой опрос и я буду рада вам все рассказать)\nМеня зовут Аня)\nНаш проект - работа в сфере рекламы. \nВся работа ведётся в чатах Telegram / Viber.\nЧто мы делаем? \nВедём свои интернет-магазинчики экотоваров.\nДля работы в проекте вам нужно 2-3 часа свободного времени\nЯ работаю из дома через интернет. Если могу я - сможете и вы.\n\n /reg - Подать заявку \n /about - О нас", reply_markup=markup)
-
-@bot.message_handler(commands=['about'])
-def send_about(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-    itembtn1 = types.KeyboardButton('/reg')
+    video = open('1.MOV', 'rb')
+    bot.send_video(message.chat.id, video, timeout=10)
+    itembtn1 = types.KeyboardButton('ДАВАЙ')
+    markup.add(itembtn1)
+    msg = bot.send_message(message.chat.id, "Привет, " + message.from_user.first_name +
+    "!\nПредлагаю поиграть) \n\nПредставь, что ты зарегистрировался и начинаешь путь в сетевом. \n\nДавай узнаем, что надо сделать сразу, чтобы заработать первые деньги!", reply_markup=markup)
+    bot.register_next_step_handler(msg, step1)
+
+def step1(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    video = open('1.MOV', 'rb')
+    bot.send_video(message.chat.id, video, timeout=10)
+    itembtn1 = types.KeyboardButton('А ДЕНЬГИ КОГДА ПОЛУЧУ?')
     markup.add(itembtn1)
 
-    bot.send_message(message.chat.id, "Магазину всего 5 лет.\nНо уже открыто более 250 офисов в странах Европы и СНГ.\nВ этом году компания открыла точки доступа к товарам в странах Америки и Мексики.\nТакже у нас собственное производство в 4 странах: Япония, Германия, Россия и США \nМагазин предлагает уникальные ЭКОтовары, которым нет аналогов на рынке.\n\nМы ищем тех, кто *хочет расти и много зарабатывать*, НЕ выходя из дома.\nМы ищем людей, которые хотят научиться *работать через интернет*.\nХалява?\nНет, халявы у нас нет\nЕсли вы ищете именно ее – удачи в поиске.\n\nМы работаем с японским микроволокном из которого делают салфетки для уборки.\nОт обычной микрофибры они отличаются тем, что работают без бытовой химии.\nТакже в нашем ассортименте есть все, за чем мы ходим с вами магазин (зубные пасты, шампуни, кондиционеры, крема, бады, чаи, напитки, стиральные пластины и т д).\nНе смотря на то, что это всё ЭКО продукция, здесь она ДЕШЕВЛЕ, чем в обычной МИЛЕ И ОСТРОВЕ ЧИСТОТЫ.", reply_markup=markup)
+    msg = bot.send_message(message.chat.id, "Конечно, нужно попробовать продукт!!! \n Ты почувствуешь себя сильным и энергичным 💪🏽💪🏽💪🏽 \n\n В составе напитка для мозга содержится ежовик-гребенчатый гриб, наешься грибов, прям как Марио))) \n\n И охренеешь от своих возможностей 🤑🤑🤑", reply_markup=markup)
+    bot.register_next_step_handler(msg, step2)
 
-@bot.message_handler(commands=['reg'])
-def user_reg(message):
+def step2(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    itembtn1 = types.KeyboardButton('Беларусь')
-    itembtn2 = types.KeyboardButton('Россия')
-    itembtn3 = types.KeyboardButton('Украина')
-    itembtn4 = types.KeyboardButton('Другое')
-    markup.add(itembtn1,itembtn2,itembtn3,itembtn4)
+    video = open('3.MOV', 'rb')
+    bot.send_video(message.chat.id, video, timeout=10)
+    itembtn1 = types.KeyboardButton('ХОРОШО, А ДАЛЬШЕ ЧТО?')
+    markup.add(itembtn1)
 
-    msg = bot.send_message(message.chat.id, "Ваша страна проживания?", reply_markup=markup)
-    bot.register_next_step_handler(msg, process_city_step)
+    msg = bot.send_message(message.chat.id, "А сразу и получишь - минимум 750₽ вернётся кэшбэк от твоей покупки", reply_markup=markup)
+    bot.register_next_step_handler(msg, step3)
 
-def process_city_step(message):
-    try:
-        chat_id = message.chat.id
-        user_dict[chat_id] = User(message.text)
+def step3(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    video = open('4.MOV', 'rb')
+    bot.send_video(message.chat.id, video, timeout=10)
+    itembtn1 = types.KeyboardButton('ЕСЛИ ДРУГ НЕ ЗАХОЧЕТ ВСЕ-РАВНО')
+    markup.add(itembtn1)
 
-        markup = types.ReplyKeyboardRemove(selective=False)
+    msg = bot.send_message(message.chat.id, "Дальше расскажешь друзьям, в своих соц сетях о продукте, и как минимум 1 захочет тоже его попробовать. Он купит, получит свой кэшбек 750₽, и ты с его покупки получишь 750₽, и все счастливы!!! \n\n А твой доход уже 1500₽ \n И это мы считаем по минимуму \n\n Тем, кто не захочет купить продукт, ты расскажи, как напился грибного напитка и сразу заработал 750₽ 😂", reply_markup=markup)
+    bot.register_next_step_handler(msg, step4)
 
-        msg = bot.send_message(message.chat.id, "Фамилия Имя Отчество?", reply_markup=markup)
-        bot.register_next_step_handler(msg, process_fullname_step)
-    except Exception as e:
-        bot.reply_to(message, 'oooops!')
+def step4(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    video = open('5.MOV', 'rb')
+    bot.send_video(message.chat.id, video, timeout=10)
+    itembtn1 = types.KeyboardButton('ОК) НУ СЕРЬЁЗНО?')
+    markup.add(itembtn1)
 
-def process_fullname_step(message):
-    try:
-        chat_id = message.chat.id
-        user = user_dict[chat_id]
-        user.fullname = message.text
+    msg = bot.send_message(message.chat.id, "Тогда сделай с ним то, что сделал Марио 👆🏼😁😁😁", reply_markup=markup)
+    bot.register_next_step_handler(msg, step5)
 
-        msg = bot.send_message(message.chat.id, "Ваш номер телефона?")
-        bot.register_next_step_handler(msg, process_phone_step)
-    except Exception as e:
-        bot.reply_to(message, 'oooops!')
+def step5(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    video = open('6.MOV', 'rb')
+    bot.send_video(message.chat.id, video, timeout=10)
+    itembtn1 = types.KeyboardButton('МНЕ НРАВИТСЯ ТАКОЙ ПОДХОД!')
+    markup.add(itembtn1)
 
-def process_phone_step(message):
-    try:
-        int(message.text)
-        chat_id = message.chat.id
-        user = user_dict[chat_id]
-        user.phone = message.text
+    msg = bot.send_message(message.chat.id, "А если серьезно, вспомни, когда ты играл в Марио, ты с первой попытки прошел все уровни? Я вот нет, но проигрыш не останавливал, а наоборот я злилась, и играла снова, пока не пройду этот дурацкий сложный уровень 😠😠😠 \n\n И в итоге все уровни прошла! \n Поэтому к сетевому отношусь, как к игре, иду по уровням, преодолеваю препятствия, и тебе предлагаю делать так же!", reply_markup=markup)
+    bot.register_next_step_handler(msg, step6)
 
-        msg = bot.send_message(message.chat.id, "Ваш возраст(в годах)?")
-        bot.register_next_step_handler(msg, process_year_step)
-    except Exception as e:
-        msg = bot.send_message(message.chat.id, "Вы ввели что то другое. Введите номер телефона.")
-        bot.register_next_step_handler(msg, process_phone_step)
+def step6(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    video = open('7.MOV', 'rb')
+    bot.send_video(message.chat.id, video, timeout=10)
+    itembtn1 = types.KeyboardButton('ЧТО?')
+    markup.add(itembtn1)
 
-def process_year_step(message):
-    try:
-        chat_id = message.chat.id
-        user = user_dict[chat_id]
-        user.year = message.text
-        user.namename = message.from_user.username
+    msg = bot.send_message(message.chat.id, "И это прекрасно))) \nИтак, кому-то ты предложил продукт, а кому-то предложил бизнес, и опять давай минимум возьмём, 1 человек захочет зарабатывать. \n\nЭто ещё +750₽, и всего 2250₽ \n\nА знаешь, что это значит?", reply_markup=markup)
+    bot.register_next_step_handler(msg, step7)
 
-        bot.send_message(chat_id, getRegData(user, 'Ваша заявка', message.from_user.first_name), parse_mode="Markdown")
-        bot.send_message(config.chat_id, getRegData(user, 'Заявка от бота', bot.get_me().username), parse_mode="Markdown")
-    except Exception as e:
-        bot.reply_to(message, 'oooops!')
+def step7(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    video = open('8.MOV', 'rb')
+    bot.send_video(message.chat.id, video, timeout=10)
+    itembtn1 = types.KeyboardButton('Я ХОЧУ БОЛЬШЕ ДЕНЕГ!')
+    markup.add(itembtn1)
+
+    msg = bot.send_message(message.chat.id, "Что ты взял первый статус 😍😍😍\nИ эти эмоции запускают бешеную энергию, которой ты срочно идешь делиться со всеми. \n\nИ на твои первые результаты, эмоции и энергию приходят еще 3 человека, и ты зарабатываешь еще +2250₽ \n\nВсего уже 4500₽, и представляешь, у тебя  уже 2 статус!!! \n\nДа, для новичков маркетинг очень выгодный, быстрый рост по статусам очень важен в начале пути!", reply_markup=markup)
+    bot.register_next_step_handler(msg, step8)
+
+def step8(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    video = open('9.MOV', 'rb')
+    bot.send_video(message.chat.id, video, timeout=10)
+    itembtn1 = types.KeyboardButton('ОГО, А КАК ИСКАТЬ ЛЮДЕЙ?')
+    markup.add(itembtn1)
+
+    msg = bot.send_message(message.chat.id, "И это очень хорошо! \nБыло бы плохо, если бы не хотел) \n\nУ тебя в команде уже 5 человек, и все они пойдут по тому же пути, что и ты. \nУ них появятся свои партнеры, а ты с их покупок будешь зарабатывать, потому что это сетевой маркетинг) \n\nЗдесь все зарабатывают друг на друге в глубину до бесконечности, и кайфуют)))\n\nТаким образом, твой доход за месяц работы будет минимум 10 000₽", reply_markup=markup)
+    bot.register_next_step_handler(msg, step9)
+
+def step9(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    itembtn1 = types.KeyboardButton('СМОТРЕТЬ МАРКЕТИНГ')
+    markup.add(itembtn1)
+
+    msg = bot.send_message(message.chat.id, "Пришло время знакомиться) \n\n Меня зовут Аня. Я занимаюсь сетевым бизнесом через интернет, и в моей команде ты получишь все необходимые инструменты для работы, а если конкретно, то: \n\n - у тебя будет такой же бот \n- другие боты (я постоянно делаю новые) \n- уроки по привлечению трафика в бота \n- уроки по работе через сторис, рилс, телеграмм канал \n- уроки по работе с программами для автоматизации\n\nПредлагаю посмотреть маркетинг план компании, чтобы понимать, откуда здесь деньги", reply_markup=markup)
+    bot.register_next_step_handler(msg, step10)
+
+def step10(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    itembtn1 = types.KeyboardButton('РЕГИСТРАЦИЯ В ПЕРВУЮ ЛИНИЮ')
+    itembtn2 = types.KeyboardButton('НАПИСАТЬ ПОСЛЕ РЕГИ')
+    markup.add(itembtn1,itembtn2)
+    bot.send_message(message.chat.id, "https://youtu.be/DycYU7A86D8")
+    bot.send_message(message.chat.id, "Пока ты изучаешь маркетинг план, сразу предлагаю дальнейшее развитие событий: \n\n1. Регистрируешься в нашу команду \n2. Активируешь контракт \n3. Получишь доступ к обучению \n4. По видео урокам настраиваешь бота и начинаешь привлекать трафик \n5. Закрываешь статусы и получаешь деньги \n\nПосле регистрации обязательно напиши мне (кнопка ниже), я добавлю тебя в наши чаты и начнём бомбить!", reply_markup=markup)
 
 
 
-def getRegData(user, title, name):
-    t = Template('$title *$name* \n Страна: *$city* \n ФИО: *$fullname* \n Telegram name : @*$namename* \n Номер телефона: *$phone* \n Возраст: *$year* \n ')
 
-    return t.substitute({
-        'title' : title,
-        'name' : name,
-        'namename' : user.namename,
-        'city' : user.city,
-        'fullname' : user.fullname,
-        'phone' : user.phone,
-        'year' : user.year,
-    })
+
+
+
+
 
 @bot.message_handler(content_types=["text"])
 def send_help(message):
+    if message.text == "РЕГИСТРАЦИЯ В ПЕРВУЮ ЛИНИЮ":
+        bot.send_message(message.from_user.id, "https://ewaproduct.com/ref/23119")
+    elif message.text == "НАПИСАТЬ ПОСЛЕ РЕГИ":
+        bot.send_message(message.from_user.id, "@anytamalkova")
+    else:
+        pass
 
-    bot.send_message(message.chat.id, 'Выберите пункт в клавиатуре снизу')
 
 @bot.message_handler(content_types=["photo"])
 def send_help(message):
